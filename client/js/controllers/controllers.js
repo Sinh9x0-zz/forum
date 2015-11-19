@@ -1,3 +1,29 @@
+app.controller('topicsController', function(session, topicFactory, userFactory){
+	var _this = this;
+	
+	topicFactory.getMessages(function(messages){
+		_this.messages = messages;
+	});
+
+	_this.addMessage = function(){
+		topicFactory.addMessage(_this.newMessage, function(){
+			topicFactory.getMessages(function(messages){
+				_this.messages = messages;
+				console.log(_this.messages);
+			});
+		});
+	}
+
+});
+
+app.controller('conversationsController', function(session, $routeParams, topicFactory, userFactory){
+	var _this = this;
+
+	topicFactory.getConvo($routeParams.id, function(convo){
+		_this.convo = convo;
+	});
+})
+
 app.controller('usersController', function(session, userFactory) {
 	var _this = this;
 	userFactory.getUsers(function(users){

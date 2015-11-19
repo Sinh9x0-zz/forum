@@ -7,6 +7,12 @@ app.factory('userFactory', function($http){
 		});
 	}
 
+	factory.getUser = function(){
+		$http.get('/findUser').success(function(output){
+			callback(output);
+		});
+	}
+
 	factory.addUser = function(newUser, callback){
 		$http.post('/addUser', newUser).success(function(user){
 			callback(user);
@@ -22,6 +28,30 @@ app.factory('userFactory', function($http){
 	factory.authenticate = function(user, callback){
 		$http.post('/authenticateUser/', user).success(function(sessionUser){
 			callback(sessionUser);
+		});
+	}
+
+	return factory;
+})
+
+app.factory('topicFactory', function ($http){
+	var factory = {};
+
+	factory.getMessages = function(callback){
+		$http.get('/allMessages').success(function(output){
+			callback(output);
+		});
+	}
+
+	factory.addMessage = function(newMessage, callback){
+		$http.post('/addMessage', newMessage).success(function(output){
+			callback(output);
+		});
+	}
+
+	factory.getConvo = function(tid, callback){
+		$http.get('/getConvo/' + tid).success(function(output){
+			callback(output);
 		});
 	}
 

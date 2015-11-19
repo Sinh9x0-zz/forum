@@ -4,7 +4,8 @@ var UserSchema = new mongoose.Schema({
 	username: { type: String, trim: true },
 	email: { type: String, trim: true },
 	password: { type: String, trim: true },
-	//salt: { type: String, trim: true },
+	posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message'}],
+	comment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
 	created_at: { type: Date, default: Date.now },
 	updated_at: { type: Date, default: Date.now }
 });
