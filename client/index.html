@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+
+<head>
+
+	<meta charset="utf-8">
+	<link rel="stylesheet" type='text/css' href='/css/bootstrap.css'>
+
+	<title>Project Title</title>
+
+	<style>
+
+	body {
+	 	padding-top: 60px;
+	}
+
+	#shadow {
+		background: black;
+		position: fixed; 
+		left:0; 
+		top:0; 
+		width: 100%;	
+		height: 100%; 
+		z-index:100;
+		opacity: 0.75;
+	}
+
+	li a { 
+		cursor: pointer; 
+		cursor: hand; 
+	}
+
+	#form {
+		display: none;
+		position: fixed;
+		padding-top: 20px;
+		padding-left:20px;
+		width: 100%;
+		background: #38A8E8;
+		z-index: 101;
+		min-width: 350px;
+
+	}
+
+		.text-input {
+			width: 30%;
+			min-width: 300px;
+		}
+
+		#confirmPassword, #email {
+			display: none;
+		}
+
+	</style>
+
+</head>
+
+<body>
+
+<div ng-controller='usersController as usrCtrl'>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#/">Project Name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#/partials1">Partial I</a></li>
+            <li><a href="#/partials2">Partial II</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li ng-hide='usrCtrl.inSession()' id="action"><a class='signin'>Log in or sign up</a></li>
+            <li ng-show='usrCtrl.inSession()' ng-click='usrCtrl.destroySession()'><a class='signout'>Log Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+	<form id="form" method="post" class="form-horizontal">
+	    <div class="form-group">
+	      <label for="inputUsername" class="col-md-2 col-md-offset-2 control-label">Username</label>
+	      <div class="col-md-8">
+	        <input type="text" ng-model="usrCtrl.user.username"class="form-control text-input" 
+	        id="inputUsername" placeholder="Username">
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+	      <label class="col-md-4 control-label">Do you already have an account?</label>
+	      <div class="col-md-8">
+	        <div class="radio">
+	          <label>
+	            <input type="radio" ng-model="usrCtrl.status" name="account_status" value="noAccount">
+				No, create an account now.          
+			</label>
+	        </div>
+	        <div class="radio">
+	          <label>
+	            <input type="radio" ng-model="usrCtrl.status" name="account_status" value="account">
+	            	Yes, my password is:
+	          </label>
+	        </div>
+	      </div>
+	    </div>
+
+	    <div id='email' class="form-group">
+	      <label for="email" class="col-md-2 col-md-offset-2 control-label">Email</label>
+	      <div class="col-md-8">
+	        <input type="email" ng-model="usrCtrl.user.email" class="form-control text-input" id="inputEmail" placeholder="Email">
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+	      <label for="inputPassword" class="col-md-2 col-md-offset-2 control-label">Password</label>
+	      <div class="col-md-8">
+	        <input type="password" ng-model="usrCtrl.user.password" class="form-control text-input" id="inputPassword" placeholder="Password">
+	      </div>
+	    </div>
+
+	    <div id='confirmPassword' class="form-group">
+	      <label for="inputPassword" class="col-md-2 col-md-offset-2 control-label">Confirm Password</label>
+	      <div class="col-md-8">
+	        <input type="password" ng-model="usrCtrl.user.confirm" class="form-control text-input" id="passwordConfirm" placeholder="Confirm your password">
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+	      <div class="col-md-8 col-md-offset-4">
+	        <button id='signin_button' ng-click="usrCtrl.userAction()" class="btn btn-primary">Sign In</button>
+	      </div>
+	    </div>
+	</form>
+
+	<div id="shadow"></div>
+
+	<div class="container" ng-view=""></div>
+
+	<!-- Load Libraries -->
+	<script src="/js/libraries/jquery-2.1.4.min.js"></script>
+	<script src="/js/libraries/angular-1.4.7.min.js"></script>
+	<script src="/js/libraries/angular-route.min.js"></script>
+ 	<script src="/js/libraries/bootstrap.min.js"></script>
+  	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Dynamic Angular Front End -->
+	<script type='text/javascript' src="/js/routes.js"></script>				
+	<script type='text/javascript' src="/js/factories/factories.js"></script>		
+	<script type='text/javascript' src="/js/controllers/controllers.js"></script>				
+
+	<script>
+
+		$(document).ready(function(){
+
+		    $("#shadow").css("height", $(document).height()).hide();
+
+		    $(".signin").click(function(){
+		        $("#shadow").toggle();
+		        $("#form").slideToggle(1000, function(){
+
+		        });
+		    });
+
+		    $("#shadow").click(function(){
+		    	$("#shadow").toggle();
+		        $("#form").slideToggle(1000, function(){
+
+		        });
+		    });
+
+			$('input[name="account_status"]:radio').change(function(){
+				if($("input[name='account_status']:checked").val() == 'noAccount'){
+					$('#inputPassword').val("");
+					$('#signin_button').text("Sign Up");
+					$('#form').attr("action", "/signup");
+					$('#email').slideDown();
+					$('#confirmPassword').slideDown();
+				} else {
+					$('#signin_button').text("Sign In");
+					$('#form').attr("action", "/signin");
+					$('#confirmPassword').slideUp();
+					$('#email').slideUp();
+				}
+			});
+
+			$('#signin_button').click(function(){
+				$("#shadow").toggle();
+		        $("#form").slideToggle(1000);
+		        //$("#action").html("<a class='logout'>Log Out</a></span>");
+			})
+
+			// $('.logout').click(function(){
+		 //        $("#action").html("<a class='signin'>Log in or sign up</a>");
+			// })
+
+		});
+
+	</script>
+</body>
+
+</html>
