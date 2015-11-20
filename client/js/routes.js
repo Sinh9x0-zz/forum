@@ -8,8 +8,8 @@ app.config(function ($routeProvider) {
     .when('/create', {
         templateUrl: 'partials/create.html'
     })
-    .when('/partial1',{
-        templateUrl: 'partials/partial1.html'
+    .when('/members',{
+        templateUrl: 'partials/users.html'
     })
     .when('/topic/:id',{
         templateUrl: 'partials/conversation.html'
