@@ -9,7 +9,6 @@ app.controller('topicsController', function(session, topicFactory, userFactory){
 		topicFactory.addMessage(_this.newMessage, function(){
 			topicFactory.getMessages(function(messages){
 				_this.messages = messages;
-				console.log(_this.messages);
 			});
 		});
 	}
@@ -22,6 +21,26 @@ app.controller('conversationsController', function(session, $routeParams, topicF
 	topicFactory.getConvo($routeParams.id, function(convo){
 		_this.convo = convo;
 	});
+
+	_this.addComment = function(){
+		_this.newComment.message_id = _this.convo._id;
+
+		session.checkSession(function(sessionUser){
+			if(sessionUser){
+				session.storeUser(sessionUser);
+				session.getUser(function(sUser){
+					_this.newComment.username = sUser.username;
+					topicFactory.addComment(_this.newComment, function(convo){
+						topicFactory.getConvo($routeParams.id, function(convo){
+							_this.convo = convo;
+							_this.newComment = {};
+						});
+					});
+				}); 
+			}
+		});
+
+	}
 })
 
 app.controller('usersController', function(session, userFactory) {

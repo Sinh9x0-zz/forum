@@ -22,11 +22,13 @@ module.exports = (function() {
 				updated_at: new Date()
 			});
 
-			newUser.save(function(err, data){
+			newUser.save(function(err, user){
 				if(err) {
 					console.log(err);
 				} else {
-					res.json(data);	
+					req.session.username = user.username;
+					req.session.user_id = user._id;
+					res.json(user);	
 				}
 			});
 
@@ -39,6 +41,7 @@ module.exports = (function() {
 				} else {
 					if(user) {
 						if(req.body.password == user.password){
+							req.session.username = user.username;
 							req.session.user_id = user._id;
 							console.log('Session User ID: ', req.session.user_id);
 						}

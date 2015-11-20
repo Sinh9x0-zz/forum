@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type='text/css' href='/css/bootstrap.css'>
 
-	<title>Project Title</title>
+	<title>OpenForum</title>
 
 	<style>
 
@@ -77,10 +77,11 @@
 		.avatar {
 			width: 100px;
 			height: 100px;
-			background-color: royalblue;
+			background-color: #34A6E7;
 			border: 1px groove black;
 			display: inline-block;
 			margin-top:20px;
+			border-radius: 5px;
 		}
 
 		.message {
@@ -101,12 +102,12 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#/">Project Name</a>
+          <a class="navbar-brand" href="#/">OpenForum</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#/partials1">Partial I</a></li>
-            <li><a href="#/partials2">Partial II</a></li>
+            <li><a href="#/">Forum</a></li>
+            <li><a href="#/members">Members</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li ng-hide='usrCtrl.inSession()' id="action"><a class='signin'>Log in or sign up</a></li>

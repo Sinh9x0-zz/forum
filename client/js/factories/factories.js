@@ -49,6 +49,12 @@ app.factory('topicFactory', function ($http){
 		});
 	}
 
+	factory.addComment = function(newComment, callback){
+		$http.post('/addComment', newComment).success(function(output){
+			callback(output);
+		});
+	}
+
 	factory.getConvo = function(tid, callback){
 		$http.get('/getConvo/' + tid).success(function(output){
 			callback(output);

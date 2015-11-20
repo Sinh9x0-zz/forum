@@ -13,6 +13,5 @@ var MessageSchema = new mongoose.Schema({
 mongoose.model('Message', MessageSchema);
 
 MessageSchema.path('_User').required(true, "you must be logged in to create a topic");
-MessageSchema.path('message').required(true, "message is required");
 MessageSchema.path('topic').required(true, "Topic is required");
 MessageSchema.path('category').required(true, "Category is required");

@@ -21,7 +21,7 @@ module.exports = function(app) {
 	})
 
 	app.get('/destroySession', function(req, res){
-		delete req.session;
+		req.session.destroy();
 		res.json(true);
 	});
 
@@ -39,6 +39,10 @@ module.exports = function(app) {
 
 	app.get('/getconvo/:id', function(req, res){
 		messages.getConvo(req, res);
+	});
+
+	app.post('/addComment', function(req, res){
+		messages.addComment(req, res);
 	});
 
 };

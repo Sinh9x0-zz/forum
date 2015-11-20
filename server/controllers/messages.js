@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Message = mongoose.model('Message');
+var Comment = mongoose.model('Comment');
+var User = mongoose.model('User');
 
 module.exports = (function() {
 	return {
@@ -18,7 +20,6 @@ module.exports = (function() {
 				message: req.body.message,
 				topic: req.body.topic,
 				category: req.body.category,
-				password: req.body.password,
 				created_at: new Date(),
 				updated_at: new Date()
 			});
@@ -36,9 +37,35 @@ module.exports = (function() {
 		getConvo: function(req, res){
 			Message.findOne({_id: req.params.id})
 				.populate('_User') 
+				.populate('comments')
 				.exec(function (err, data){
 					res.json(data);
 				});
+		},
+
+		addComment: function(req, res){
+			var newComment = new Comment({
+				username: req.body.username,
+				_User: req.session.user_id,
+				_Message: req.body.message_id, 
+				comment: req.body.message,
+				created_at: new Date(),
+				updated_at: new Date()
+			});
+
+			console.log(newComment);
+
+			newComment.save(function(err, cdata){
+				if(err) {
+					console.log(err);
+				} else {
+					Message.update({_id: cdata._Message}, {$push: {comments: cdata.id}}, function (err, mdata){
+						User.update({_id: cdata._User}, {$push: {comments: cdata.id}}, function(err, udata){
+							res.json(cdata);	
+						});
+					});
+				}
+			});
 		}
 		
 	}

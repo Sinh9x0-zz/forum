@@ -9,20 +9,28 @@
         </div>
     </div>
 
+    <div ng-repeat="comment in cvCtrl.convo.comments" class='post_container'>
+        <div class='user'><span class='avatar'></span><span ng-bind='comment.username'></span></div>
+        <div class='message'>
+        <strong>Posted at <span ng-bind='comment.created_at | date: "medium"'></span></strong>
+        <br><span ng-bind='comment.comment'></span>
+        </div>
+    </div>
+
+
 <form class="form-horizontal">
   
     <h4>Add a Reply</h4>
 
     <div class="form-group">
       <div class="col-lg-10">
-        <textarea ng-model='tpcCtrl.newMessage.message' class="form-control" rows="3"></textarea>
+        <textarea ng-model='cvCtrl.newComment.message' class="form-control" rows="3"></textarea>
       </div>
     </div>
 
-
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <button type="submit" ng-click="tpcCtrl.addMessage()" class="btn btn-primary">Submit</button>
+        <button type="submit" ng-click="cvCtrl.addComment()" class="btn btn-primary">Submit</button>
       </div>
     </div>
 
